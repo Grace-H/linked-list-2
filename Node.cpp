@@ -11,27 +11,34 @@
 
 using namespace std;
 
+//constructor
 Node::Node(Student* newstudent){
-  student = student;
+  student = newstudent;
+  next = NULL;
 }
 
+//destructor
 Node::~Node(){
   delete student;
   delete next;
 }
 
+//returns student it contains
 Student* Node::getStudent(){
   return student;
 }
 
+//sets student it contains
 void Node::setStudent(Student* newstudent){
   student = newstudent;
 }
 
+//returns Node it points to
 Node* Node::getNext(){
   return next;
 }
 
+//sets Node it points to
 void Node::setNext(Node* newnode){
   next = newnode;
 }

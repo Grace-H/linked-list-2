@@ -1,0 +1,27 @@
+#include "Student.h"
+
+#ifndef NODE_H
+#define NODE_H
+
+using namespace std;
+
+class Node{
+ public:
+  //constuctor, takes Student pointer
+  Node(Student* student);
+  //destructor, destroys student and pointer
+  ~Node();
+  //returns student Node contains
+  Student* getStudent();
+  //set student Node contains
+  void setStudent(Student* student);
+  //returns pointer to next Node
+  Node* getNext();
+  //set pointer to next Node
+  void setNext(Node* node);
+ private:
+  Student* student;
+  Node* next;
+}
+
+#endif

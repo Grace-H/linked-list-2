@@ -1,0 +1,12 @@
+using namespace std;
+
+Node::Node(Student* newstudent){
+  student = student;
+}
+
+Node::~Node(){
+  delete student;
+  delete next;
+}
+
+Student* 

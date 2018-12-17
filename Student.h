@@ -16,6 +16,7 @@ class Student{
  public:
   Student(char* newfirst, char* newlast, int newid, float newgpa);
   ~Student();
+  int getId();
   void print();
  private:
   char* first;

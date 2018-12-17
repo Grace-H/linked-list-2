@@ -24,6 +24,11 @@ Student::~Student(){
   delete [] last;
 }
 
+//get student's id
+int Student::getId(){
+  return id;
+}
+
 //display Student's info
 void Student::print(){
   cout << first << " " << last << ", " << id << ", " << gpa << endl;

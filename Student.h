@@ -17,6 +17,7 @@ class Student{
   Student(char* newfirst, char* newlast, int newid, float newgpa);
   ~Student();
   int getId();
+  float getGPA();
   void print();
  private:
   char* first;

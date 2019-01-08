@@ -20,57 +20,16 @@ void deleteStudent(Node* &head);
 void average(Node* head);
 
 int main(){
-  
-  //student1
-  char* first = new char[20];
-  strcpy(first, "Paige");
-  char* last = new char[20];
-  strcpy(last, "Turner");
-  Student* student1 = new Student(first, last, 823456, 2.4544);
-  Node* head = new Node(student1); //create first Node
-  cout << "created student1" << endl;
-  
-  //student2
-  char* first2 = new char[20];
-  strcpy(first2, "Peter");
-  char* last2 = new char[20];
-  strcpy(last2, "Piper");
-  Student* student2 = new Student(first2, last2, 654321, 5.4299);
-  addNode(head, head, NULL, student2); //add new Node
-  cout << "created student2" << endl;
-  
-  char* first3 = new char[20];
-  strcpy(first3, "Jack");
-  char* last3 = new char[20];
-  strcpy(last3, "Corner");
-  Student* student3 = new Student(first3, last3, 898765, 1.925);
-  addNode(head, head, NULL, student3); //add new Node
-  cout << "created student3" << endl;
-  //print list of students
-  //printList(head);
-
-  char* first4 = new char[20];
-  strcpy(first4, "Jack");
-  char* last4 = new char[20];
-  strcpy(last4, "Corner");
-  Student* student4 = new Student(first4, last4, 798765, 1.92);
-  addNode(head, head, NULL, student4); //add new Node
-  cout << "created student4" << endl;
-  //print list of students
-  printList(head);
-
-  cout << "searching for student with id 798765" << endl;
-  deleteNode(head, head, NULL, 654321);
-  cout << endl;
-  printList(head);
-  average(head);
+  //start of linked list
+  Node* head = NULL;
 
   //cstrings with commands for comparision
   char addStr[10] = "ADD";
   char deleteStr[10] = "DELETE";
   char printStr[10] = "PRINT";
   char quitStr[10] = "QUIT";
-  
+  char avgStr[10] = "AVERAGE";  
+
   //Welcome!
   cout << "Welcome to student list." << endl;
   
@@ -80,7 +39,7 @@ int main(){
   while (stillRunning){
   
     //get a command from the user
-    cout << "Ready for command 'ADD' 'DELETE' 'PRINT' 'QUIT'" << endl;
+    cout << "Ready for command 'ADD' 'DELETE' 'PRINT' 'AVERAGE' 'QUIT'" << endl;
     cin.get(input, 256);
     cin.get();
     
@@ -93,14 +52,25 @@ int main(){
     if(strcmp(input, addStr) == 0){ //ADD
       addStudent(head);
       cout << "Added Student" << endl;
+      cout << endl;
     } else if (strcmp(input, deleteStr) == 0){ //DELETE
-      //    deleteStudent(students);
+      deleteStudent(head);
+      cout << endl;
     } else if (strcmp(input, printStr) == 0){ //PRINT
-      printList(head);
+      if(head == NULL){
+	cout << "No students to print" << endl;
+      }
+      else{
+	printList(head);
+      }
+      cout << endl;
     } else if (strcmp(input, quitStr) == 0){ //QUIT
       quit(head);
       stillRunning = false;
       cout << "Quit application" << endl;
+    } else if(strcmp(input, avgStr) == 0){
+      average(head);
+      cout << endl;
     } else { //input not recognized, prompt again
       cout << "Sorry, did not recognize that command" << endl;
     }
@@ -109,8 +79,9 @@ int main(){
   return 0;
 }
 
+//void addStudent(Node* &head): get student info from user and add a Node with new Student
 void addStudent(Node* &head){
-
+  //get info about student
   char* first = new char[256];
   cout << "First Name: " << endl;
   cin.get(first, 256);
@@ -131,13 +102,13 @@ void addStudent(Node* &head){
   cin.get(input, 256);
   cin.get();
   float gpa = atof(input);
-  
+
+  //create student and node
   Student* student = new Student(first, last, id, gpa);
-  //Node* head = new Node(student1); //create first Node
   addNode(head, head, NULL, student);
-  cout << "created student1" << endl;
-    
 }
+
+//void quit(Node* &head): delete all Nodes & Students
 void quit(Node* &head){
   if(head != NULL){
     Node* current = head;
@@ -146,43 +117,71 @@ void quit(Node* &head){
     quit(head);
   }
 }
-  
+
+//void deleteNode(Node* &head, Node* current, Node* previous, int id): find and delete node using Student id
 void deleteNode(Node* &head, Node* current, Node* previous, int id){
+  //if list is empty, no students can match
   if(head == NULL){
     cout << "No students with matching id" << endl;
   }
+  //if current node matches id
   else if(current->getStudent()->getId() == id){
-    cout << "Student found" << endl;
-    current->getStudent()->print();
+    //if current is the head, make head the next node
     if(current == head){
       head = current->getNext();
     }
+    //connect previous to next
     else{
 	previous->setNext(current->getNext());
     }
+    //delete found node
     delete current;
   }
+  //if end of list hasn't been reached
   else if (current->getNext() != NULL){
     deleteNode(head, current->getNext(), current, id);
   }
+  //if end of list and no student found
   else{
     cout << "No students with matching id" << endl;
   }
 }
 
-void average(Node* head){
-  float gpa = 0;
-  Node* current = head;
-  int total = 0;
-  while(current != NULL){
-    gpa += current->getStudent()->getGPA();
-    current = current->getNext();
-    total++;
-  }
-  cout << setprecision(3) << gpa/total << endl;
-  cout << "hi" << endl;
+//void deleteStudent(Node* &head): get student id from user and delete corresponding node
+void deleteStudent(Node* &head){
+  //get id from user
+  cout << "Student id: " << endl;
+  char* input = new char[256];
+  cin.get(input, 256);
+  cin.get();
+  int num = atoi(input);
+  
+  //find and delete node
+  deleteNode(head, head, NULL, num);
+  delete [] input;
 }
 
+//void average(Node* head): prints out average GPA of list
+void average(Node* head){
+  if(head == NULL){
+    cout << "No students to average" << endl;
+  }
+  else{
+    float gpa = 0;
+    Node* current = head;
+    int total = 0;
+    //loop through all students and add each gpa to gpa
+    while(current != NULL){
+      gpa += current->getStudent()->getGPA();
+      current = current->getNext();
+      total++;
+    }
+    //print out gpa, shown to two decimal places
+    cout << setprecision(3) << gpa/total << endl;
+  }
+}
+
+//void printList(Node* start): prints out students
 void printList(Node* start){
   if(start != NULL){
     start->getStudent()->print();
@@ -190,62 +189,35 @@ void printList(Node* start){
   }
 }
 
+//void addNode(Node*, Node*, Node*, Student*): locates where student should
+//be in list based on student id (list is sorted low->high) and creates new node at that location
 void addNode(Node* &head, Node* current, Node* previous, Student* student){
-  if(head != NULL){
-    cout << "Head: " << head->getStudent()->getId() << endl;
-  }
-  else{
-    cout << "head is NULL" << endl;
-  }
-  if(current != NULL){
-    cout << "current: " << current->getStudent()->getId() << endl;
-  }
-  else{
-    cout << "current is NULL" << endl;
-  }
-  if(previous != NULL){
-    cout << "Previous: " << previous->getStudent()->getId() << endl;
-  }
-  else{
-    cout << "previous is NULL" << endl;
-  }
   //if list is empty
-  if(current == NULL){
+  if(head == NULL){
+    head = new Node(student);
+  }
+  //if at the end of the list
+  else if(current == NULL){
     current = new Node(student);
-    cout << "Added in if1" << endl;
-    //start->getStudent()->print();
-    printList(current);
   }
   //the first node in the list and smallest
-  if(previous == NULL && student->getId() <= current->getStudent()->getId()){
+  else if(previous == NULL && student->getId() <= current->getStudent()->getId()){
     head = new Node(student);
     head->setNext(current);
-    cout << "head's student in 1B" << head->getStudent()->getId() << endl;
-    cout << "Added in if1B" << endl;
   }
   //if student is greater than current and next node is NULL
   else if(current->getStudent()->getId() <= student->getId() && current->getNext() == NULL){
     Node* node = new Node(student);
     current->setNext(node);
-    cout << "Added in if2" << endl;
-    //start->getStudent()->print();
   }
   //if start is between current and next nodes
   else if(current->getStudent()->getId() <= student->getId() && current->getNext()->getStudent()->getId() >= student->getId()){
     Node* node = new Node(student);
     node->setNext(current->getNext());
     current->setNext(node);
-    cout << "Added in if3" << endl;
-    //start->getStudent()->print();
   }
+  //move on to next position in list
   else{
     addNode(head, current->getNext(), current, student);
-    cout << "not there yet" << endl;
   }
-  //get last node in list
-  //  Node* current = start;
-  //while(current->getNext() != NULL){
-    //current = current->getNext();
-    //}
-  //current->setNext(new Node(student));
 }

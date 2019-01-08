@@ -35,6 +35,7 @@ void Student::print(){
   cout << first << " " << last << ", " << id << ", " << setprecision(3) << gpa << endl;
 }
 
+//get gpa
 float Student::getGPA(){
   return gpa;
 }

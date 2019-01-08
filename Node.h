@@ -1,3 +1,7 @@
+/*The following code was written by Justin He
+  This is the header file for Node.o
+ */
+
 //Node class definitions
 
 #ifndef NODE_H

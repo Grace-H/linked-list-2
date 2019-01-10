@@ -32,7 +32,7 @@ int Student::getId(){
 
 //display Student's info
 void Student::print(){
-  cout << first << " " << last << ", " << id << ", " << setprecision(3) << gpa << endl;
+  cout << first << " " << last << ", " << id << ", " << setprecision(2) << fixed << gpa << endl;
 }
 
 //get gpa
